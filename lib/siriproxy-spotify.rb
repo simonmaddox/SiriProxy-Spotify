@@ -32,4 +32,16 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     
     request_completed
   end
+  
+  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) pause/i do
+    
+    commandSpotify("pause")
+    say "Pausing Spotify..."
+    
+    request_completed
+  end
+  
+  def commandSpotify(command)
+    (`osascript -e 'tell application "Spotify"\n#{command}\nend'`).strip
+  end
 end
