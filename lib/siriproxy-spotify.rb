@@ -27,7 +27,7 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
       say "Playing #{track["name"]} by #{track["artists"][0]["name"]}"
       `open #{track["href"]}`
     else
-      say "I could not find anything by #{matchData[1]}"
+      say "I could not find anything by #{query}"
     end
     
     request_completed
@@ -41,7 +41,19 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     request_completed
   end
   
+  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the next track/i do
+    
+    response = commandSpotify("next track\n#{detailedNowPlayingCommand()}")
+    say "Playing #{response}"
+    
+    request_completed
+  end
+  
+  def detailedNowPlayingCommand()
+		return "set nowPlaying to current track\nreturn \"\" & name of nowPlaying & \" by \" & artist of nowPlaying"
+	end
+  
   def commandSpotify(command)
-    (`osascript -e 'tell application "Spotify"\n#{command}\nend'`).strip
+    return (`osascript -e 'tell application "Spotify"\n#{command}\nend'`).strip
   end
 end
