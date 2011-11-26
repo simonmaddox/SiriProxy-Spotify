@@ -41,10 +41,19 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     request_completed
   end
   
-  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the next track/i do
+  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the (last|previous) (track|song)/i do
+    # Sending this command once only goes to the beginning of the current track. So let's send it twice!
+    commandSpotify("previous track")
+    response = commandSpotify("previous track\n#{detailedNowPlayingCommand()}")
+    say "Ok, playing #{response}"
+    
+    request_completed
+  end
+  
+  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the next (track|song)/i do
     
     response = commandSpotify("next track\n#{detailedNowPlayingCommand()}")
-    say "Playing #{response}"
+    say "Ok, playing #{response}"
     
     request_completed
   end

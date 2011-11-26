@@ -8,4 +8,5 @@ There is a [video available here](http://www.youtube.com/watch?v=C8Jdz157Shw).
 
 - Spotify, play me some {Artist}
 - Spotify, pause
-- Spotify, play the next track
+- Spotify, play the next song
+- Spotify, play the previous song
