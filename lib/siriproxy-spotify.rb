@@ -51,11 +51,15 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
   end
   
   listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the next (track|song)/i do
-    
     response = commandSpotify("next track\n#{detailedNowPlayingCommand()}")
     say "Ok, playing #{response}"
     
     request_completed
+  end
+  
+  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) what (band|singer|artist|track|group|song) is this/i do
+    response = commandSpotify("#{detailedNowPlayingCommand()}")
+    say "Playing #{response}"
   end
   
   def detailedNowPlayingCommand()
