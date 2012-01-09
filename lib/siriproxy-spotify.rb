@@ -36,7 +36,7 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     request_completed
   end
   
-  listen_for /#{SPOTIFY_CHECK} p(a|u).+/i do
+  listen_for /#{SPOTIFY_CHECK} p(a|u|o).+/i do
     
     commandSpotify("pause")
     say "Pausing Spotify..."
