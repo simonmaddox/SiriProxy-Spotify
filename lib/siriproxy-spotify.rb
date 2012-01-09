@@ -11,11 +11,14 @@ require 'uri'
 ######
 
 class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
+
+  SPOTIFY_CHECK = '(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify)'
+
   def initialize(config)
     #if you have custom configuration options, process them here!
   end
 
-  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play me some (.*)/i do |keyword, query|
+  listen_for /#{SPOTIFY_CHECK} play(?: me some)? (.*)/i do |keyword, query|
     
     artist = URI.escape(query.strip)
 	  
@@ -33,7 +36,7 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     request_completed
   end
   
-  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) pause/i do
+  listen_for /#{SPOTIFY_CHECK} p(a|u|o).+/i do
     
     commandSpotify("pause")
     say "Pausing Spotify..."
@@ -41,7 +44,7 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     request_completed
   end
   
-  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the (last|previous) (track|song)/i do
+  listen_for /#{SPOTIFY_CHECK} play the (last|previous) (track|song)/i do
     # Sending this command once only goes to the beginning of the current track. So let's send it twice!
     commandSpotify("previous track")
     response = commandSpotify("previous track\n#{detailedNowPlayingCommand()}")
@@ -50,14 +53,14 @@ class SiriProxy::Plugin::Spotify < SiriProxy::Plugin
     request_completed
   end
   
-  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) play the next (track|song)/i do
+  listen_for /#{SPOTIFY_CHECK} play the next (track|song)/i do
     response = commandSpotify("next track\n#{detailedNowPlayingCommand()}")
     say "Ok, playing #{response}"
     
     request_completed
   end
   
-  listen_for /(spotify|spotter five|spot of phi|spot fie|spot a fight|specify|spot if i|spotted by|stultify) what (band|singer|artist|track|group|song) is this/i do
+  listen_for /#{SPOTIFY_CHECK} what (band|singer|artist|track|group|song) is this/i do
     response = commandSpotify("#{detailedNowPlayingCommand()}")
     say "Playing #{response}"
     
